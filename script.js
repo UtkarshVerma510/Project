@@ -29,9 +29,28 @@ updateNavigation();
 
 const contactForm = document.querySelector(".contact-form");
 const formStatus = document.querySelector(".form-status");
+const themeToggle = document.querySelector(".theme-toggle");
+const rewardBanner = document.querySelector(".reward-banner");
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  themeToggle.textContent = document.body.classList.contains("dark") ? "☀" : "☾";
+});
+
+document.querySelectorAll(".section").forEach((section) => section.classList.add("reveal"));
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add("visible"));
+}, { threshold: 0.12 });
+document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
+
+setTimeout(() => rewardBanner.remove(), 7000);
 
 contactForm.addEventListener("submit", (event) => {
   event.preventDefault();
+  if (!contactForm.checkValidity()) {
+    contactForm.reportValidity();
+    return;
+  }
   formStatus.textContent = "Thanks! Your message is ready to send.";
   contactForm.reset();
 });
